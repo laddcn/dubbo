@@ -22,6 +22,7 @@ import org.apache.dubbo.rpc.RpcContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Date;
 import java.util.concurrent.CompletableFuture;
 
 public class DemoServiceImpl implements DemoService {
@@ -38,4 +39,11 @@ public class DemoServiceImpl implements DemoService {
         return null;
     }
 
+    @Override
+    public String echoDate(Date date) {
+        if(date!=null){
+            throw new NullPointerException("NPE");
+        }
+        return "This time is "+date.toString();
+    }
 }

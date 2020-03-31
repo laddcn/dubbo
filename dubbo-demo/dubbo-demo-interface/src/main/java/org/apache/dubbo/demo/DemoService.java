@@ -16,11 +16,16 @@
  */
 package org.apache.dubbo.demo;
 
+import java.util.Date;
 import java.util.concurrent.CompletableFuture;
 
 public interface DemoService {
 
     String sayHello(String name);
+
+    default String echoDate(Date date){
+        return "test";
+    }
 
     default CompletableFuture<String> sayHelloAsync(String name) {
         return CompletableFuture.completedFuture(sayHello(name));

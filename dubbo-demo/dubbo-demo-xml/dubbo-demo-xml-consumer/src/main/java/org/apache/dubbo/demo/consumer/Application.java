@@ -18,8 +18,10 @@ package org.apache.dubbo.demo.consumer;
 
 import org.apache.dubbo.demo.DemoService;
 
+import org.apache.dubbo.rpc.service.GenericService;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import java.util.Date;
 import java.util.concurrent.CompletableFuture;
 
 public class Application {
@@ -30,8 +32,23 @@ public class Application {
     public static void main(String[] args) throws Exception {
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("spring/dubbo-consumer.xml");
         context.start();
-        DemoService demoService = context.getBean("demoService", DemoService.class);
-        CompletableFuture<String> hello = demoService.sayHelloAsync("world");
-        System.out.println("result: " + hello.get());
+        GenericService demoService = (GenericService) context.getBean("demoService");
+
+//        Object genericInvokeResult = demoService.$invoke("sayHello", new String[] { String.class.getName() },
+//                new Object[] { "dubbo generic invoke" });
+        try {
+            Object genericInvokeResult = demoService.$invoke("echoDate", new String[]{Date.class.getName()},
+                    new Object[]{"2019-12-31"});
+            System.out.println(genericInvokeResult);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+//        DemoService demoService = context.getBean("demoService", DemoService.class);
+//        String sycnResult = demoService.sayHello("world");
+//        System.out.println("Sync result: " + sycnResult);
+//        CompletableFuture<String> hello = demoService.sayHelloAsync("world");
+//        System.out.println("result: " + hello.get());
     }
 }

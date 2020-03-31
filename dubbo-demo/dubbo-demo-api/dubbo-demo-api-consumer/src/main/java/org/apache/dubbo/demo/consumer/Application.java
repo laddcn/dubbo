@@ -26,6 +26,8 @@ import org.apache.dubbo.config.utils.ReferenceConfigCache;
 import org.apache.dubbo.demo.DemoService;
 import org.apache.dubbo.rpc.service.GenericService;
 
+import java.util.Date;
+
 public class Application {
     public static void main(String[] args) {
         if (isClassic(args)) {
@@ -43,6 +45,7 @@ public class Application {
         ReferenceConfig<DemoService> reference = new ReferenceConfig<>();
         reference.setInterface(DemoService.class);
         reference.setGeneric("true");
+        reference.setTimeout(1000*1000);
 
         DubboBootstrap bootstrap = DubboBootstrap.getInstance();
         bootstrap.application(new ApplicationConfig("dubbo-demo-api-consumer"))
@@ -51,13 +54,15 @@ public class Application {
                 .start();
 
         DemoService demoService = ReferenceConfigCache.getCache().get(reference);
-        String message = demoService.sayHello("dubbo");
-        System.out.println(message);
+//        String message = demoService.sayHello("dubbo");
+//        System.out.println(message);
 
         // generic invoke
         GenericService genericService = (GenericService) demoService;
-        Object genericInvokeResult = genericService.$invoke("sayHello", new String[] { String.class.getName() },
-                new Object[] { "dubbo generic invoke" });
+//        Object genericInvokeResult = genericService.$invoke("sayHello", new String[] { String.class.getName() },
+//                new Object[] { "dubbo generic invoke" });
+        Object genericInvokeResult = genericService.$invoke("echoDate", new String[] { Date.class.getName() },
+                new Object[] { "2019-12-31 00:00:00" });
         System.out.println(genericInvokeResult);
     }
 

@@ -22,6 +22,7 @@ import org.apache.dubbo.rpc.RpcContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Date;
 import java.util.concurrent.CompletableFuture;
 
 public class DemoServiceImpl implements DemoService {
@@ -49,5 +50,13 @@ public class DemoServiceImpl implements DemoService {
             return "async result";
         });
         return cf;
+    }
+
+    @Override
+    public String echoDate(Date date) {
+        if(date!=null){
+            throw new NullPointerException("test");
+        }
+        return "Current date is " + date.toString();
     }
 }
